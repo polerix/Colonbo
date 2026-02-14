@@ -7,7 +7,7 @@ import { ScopeCamera } from './ScopeCamera';
 import { HUD } from '../ui/HUD';
 import { Polyp } from './Polyp';
 import { generateColonCurve } from '../../utils/curveGenerator';
-import * as React from 'react';
+
 
 export function SimulationScene() {
     const curve = React.useMemo(() => generateColonCurve(100), []);
