@@ -3,6 +3,7 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { useSphere } from '@react-three/cannon';
 import * as THREE from 'three';
 import { useSimulatorStore } from '../../store/useSimulatorStore';
+import { useDemoAutopilot } from './useDemoAutopilot';
 
 export function ScopeCamera() {
     const { camera } = useThree();
@@ -38,6 +39,9 @@ export function ScopeCamera() {
         mouseX: 0,
         mouseY: 0,
     });
+
+    // Demo Autopilot Hooks
+    useDemoAutopilot(api, inputs, camera);
 
     // Track cumulative rotation for loop detection
     const rotationParams = useRef({ totalYaw: 0, lastYaw: 0 });

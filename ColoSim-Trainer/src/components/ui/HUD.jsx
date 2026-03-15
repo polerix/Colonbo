@@ -7,6 +7,9 @@ export function HUD() {
     const polypsFound = useSimulatorStore((state) => state.polypsFound);
     const totalPolyps = useSimulatorStore((state) => state.totalPolyps);
     const startTime = useSimulatorStore((state) => state.startTime);
+    const isDemoMode = useSimulatorStore((state) => state.isDemoMode);
+    const demoState = useSimulatorStore((state) => state.demoState);
+    const setDemoMode = useSimulatorStore((state) => state.setDemoMode);
 
     // Time formatting
     const [elapsed, setElapsed] = React.useState(0);
@@ -41,7 +44,16 @@ export function HUD() {
             {/* Top Bar: Metrics */}
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem', textShadow: '1px 1px 2px black' }}>
                 <div>TIME: {formatTime(elapsed)}</div>
-                <div>POLYPS: {polypsFound}/{totalPolyps}</div>
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                    {isDemoMode && <div style={{ color: 'cyan', fontWeight: 'bold' }}>[DEMO: {demoState}]</div>}
+                    <button
+                        onClick={() => setDemoMode(!isDemoMode)}
+                        style={{ pointerEvents: 'auto', background: isDemoMode ? 'cyan' : '#333', color: isDemoMode ? 'black' : 'white', border: '1px solid white', padding: '5px 10px', cursor: 'pointer' }}
+                    >
+                        {isDemoMode ? 'STOP DEMO' : 'START DEMO'}
+                    </button>
+                    <div>POLYPS: {polypsFound}/{totalPolyps}</div>
+                </div>
             </div>
 
             {/* Center: Warnings */}

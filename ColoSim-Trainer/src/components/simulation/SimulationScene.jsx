@@ -7,6 +7,8 @@ import { ScopeCamera } from './ScopeCamera';
 import { HUD } from '../ui/HUD';
 import { Polyp } from './Polyp';
 import { generateColonCurve } from '../../utils/curveGenerator';
+import { StartMenu } from '../ui/StartMenu';
+import { useSimulatorStore } from '../../store/useSimulatorStore';
 
 
 export function SimulationScene() {
@@ -15,27 +17,27 @@ export function SimulationScene() {
     const polyps = React.useMemo(() => {
         const positions = [];
         for (let i = 0; i < 5; i++) {
-            const t = 0.1 + Math.random() * 0.8; // Random position along detection path (10% to 90%)
+            const t = 0.1 + Math.random() * 0.8;
             const point = curve.getPointAt(t);
-            // Offset slightly from center to be on wall?
-            // For simplicity, just on path for now, player has to look at them
-            // Or calculate normal and push out.
-            // Let's just put them near center
             positions.push(point);
         }
         return positions;
     }, [curve]);
 
+    const gameStatus = useSimulatorStore((state) => state.gameStatus);
+
     return (
         <div style={{ width: '100vw', height: '100vh', background: '#111', position: 'relative' }}>
-            <HUD />
+            {gameStatus === 'MENU' && <StartMenu />}
+            {gameStatus !== 'MENU' && <HUD />}
+
             <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
                 <Suspense fallback={null}>
                     <ambientLight intensity={0.5} />
                     <pointLight position={[10, 10, 10]} intensity={1} />
 
                     <Physics gravity={[0, 0, 0]}>
-                        <ScopeCamera />
+                        {gameStatus !== 'MENU' && <ScopeCamera />}
                         <ColonTunnel curve={curve} />
                     </Physics>
 
